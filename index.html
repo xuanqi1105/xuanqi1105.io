@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AR 展覽入口頁面 | 賽博朋克賽車展</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                    backgroundImage: {
+                        'cyber-grid': "linear-gradient(to right, #135bec20 1px, transparent 1px), linear-gradient(to bottom, #135bec20 1px, transparent 1px)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Custom Utilities for Neon Effects */
+        .neon-text-shadow {
+            text-shadow: 0 0 10px rgba(19, 91, 236, 0.7), 0 0 20px rgba(19, 91, 236, 0.5);
+        }
+
+        .neon-box-shadow {
+            box-shadow: 0 0 15px rgba(19, 91, 236, 0.4), inset 0 0 10px rgba(19, 91, 236, 0.2);
+        }
+
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(19, 91, 236, 0.1) 50%, rgba(0, 0, 0, 0) 100%);
+            opacity: 0.1;
+            position: absolute;
+            bottom: 100%;
+            animation: scanline 10s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes scanline {
+            0% {
+                bottom: 100%;
+            }
+
+            100% {
+                bottom: -100px;
+            }
+        }
+
+        /* Custom Scrollbar for HUD panels */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #101622;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #135bec;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-200 overflow-hidden h-screen w-screen flex flex-col relative">
+    <!-- Background Layer (Simulating 3D Viewport) -->
+    <div class="absolute inset-0 z-0 bg-cover bg-center opacity-40 dark:opacity-60 mix-blend-overlay"
+        data-alt="Futuristic neon city cyberpunk dark background"
+        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDmcG6ZABkg7pUsvINpuRENzL3mRHsSqunYzPzEAK8mZ8eP_PRkUfGEZeo_4OtdL_IvQQaYDGJV_YR55slEcbNN2kJBQHP9WoLitr6xAzWSrtAnvNH3gt4LbufTla-TxoU_R9-DHQL5CW3F5dFmnDnpxbTSWgeOHUImOY6gnoyQJAJK6cF9aqH0KkNu9SDiRsWH2yXwUjf-YcSewVY7KeB_B5Vsl--9Y1VeSi40G4nCT0XZAryW50hrXg-CRbcrBcxqoy4y54dSHP8');">
+    </div>
+    <!-- Cyber Grid Overlay -->
+    <div class="absolute inset-0 z-0 bg-cyber-grid bg-[length:40px_40px] opacity-20 perspective-origin-bottom"
+        style="transform: perspective(500px) rotateX(20deg) scale(1.5);"></div>
+    <!-- Vignette Overlay -->
+    <div
+        class="absolute inset-0 z-0 bg-radial-gradient from-transparent via-background-dark/50 to-background-dark pointer-events-none">
+    </div>
+    <!-- Scanline Effect -->
+    <div class="scanline"></div>
+    <!-- HUD Overlay Wrapper -->
+    <audio id="bg-music" loop autoplay>
+        <source src="music/music1.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="enter-sound">
+        <source src="music/enter1.mp3" type="audio/mpeg">
+    </audio>
+    <div class="relative z-10 flex flex-col h-full w-full p-6 md:p-10 justify-between">
+        <!-- Top HUD Bar -->
+        <header class="flex justify-between items-start w-full">
+            <!-- Top Left: Location/Status -->
+            <div class="flex flex-col gap-2">
+                <div class="flex items-center gap-3">
+                    <span class="material-icons text-primary animate-pulse">radar</span>
+
+                </div>
+                <div class="h-px w-32 bg-primary/50"></div>
+
+                <div class="h-px w-32 bg-primary/50"></div>
+            </div>
+            <!-- Audio Autoplay Prompt Removed per user request -->
+            <!-- Top Center: Decorative Element -->
+            <!-- Top Center: Decorative Element -->
+            <!-- Top Center: Decorative Element -->
+            <div class="hidden md:flex flex-col items-center gap-1 opacity-50">
+                <div class="h-1 w-1 bg-primary rounded-full"></div>
+                <div class="h-8 w-px bg-gradient-to-b from-primary to-transparent"></div>
+            </div>
+            <!-- Top Right: Time/Network -->
+            <div class="flex flex-col items-end gap-2 text-right">
+                <div class="flex items-center gap-3">
+                    <span class="text-sm tracking-[0.2em] font-bold text-white">NET: SECURE</span>
+                    <span class="material-icons text-primary text-sm">wifi</span>
+                </div>
+                <div class="h-px w-32 bg-primary/50"></div>
+                <div class="text-xs text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-ping"></span>
+                    LIVE FEED
+                </div>
+            </div>
+        </header>
+        <!-- Main Content Area -->
+        <main class="flex-grow flex flex-col items-center justify-center relative">
+            <!-- Floating Elements behind text -->
+            <div
+                class="absolute w-[500px] h-[500px] border border-primary/10 rounded-full animate-[spin_20s_linear_infinite]">
+            </div>
+            <div
+                class="absolute w-[400px] h-[400px] border border-dashed border-primary/20 rounded-full animate-[spin_15s_linear_infinite_reverse]">
+            </div>
+            <!-- Titles -->
+            <div class="text-center space-y-2 mb-12 relative z-20">
+
+                <h1
+                    class="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter text-white uppercase neon-text-shadow leading-none">
+                    賽博朋克<br />
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-500">賽車展</span>
+                </h1>
+                <p
+                    class="text-slate-400 max-w-lg mx-auto mt-6 text-sm md:text-base leading-relaxed border-l-2 border-primary pl-4 text-left">
+                    歡迎進入到充滿賽博朋克賽車的展覽
+                </p>
+            </div>
+            <!-- Main CTA Button -->
+            <div class="relative group">
+                <!-- Button Glow Background -->
+                <div
+                    class="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-lg blur opacity-40 group-hover:opacity-100 transition duration-1000 group-hover:duration-200">
+                </div>
+                <a href="guided.html" id="enter-btn"
+                    class="relative px-12 py-5 bg-background-dark ring-1 ring-white/10 rounded-lg leading-none flex items-center gap-4 transition-all duration-300 hover:bg-primary/10 hover:ring-primary hover:tracking-widest">
+                    <span class="material-icons text-primary group-hover:animate-pulse">view_in_ar</span>
+                    <span class="text-white font-bold tracking-widest text-lg">進入介紹畫面</span>
+                    <span
+                        class="material-icons text-slate-500 group-hover:text-white transition-colors">chevron_right</span>
+                </a>
+                <!-- Technical lines attached to button -->
+                <div class="absolute top-1/2 -left-12 w-10 h-px bg-primary/30 hidden md:block"></div>
+                <div class="absolute top-1/2 -right-12 w-10 h-px bg-primary/30 hidden md:block"></div>
+            </div>
+
+        </main>
+        <!-- Bottom HUD Footer -->
+        <footer class="flex justify-between items-end w-full border-t border-white/5 pt-6">
+            <!-- Bottom Left: Version -->
+            <div class="flex flex-col gap-2">
+
+                <div class="text-xs text-primary font-mono">V.2.0.4 <span class="text-slate-600">|</span> BUILD 8839
+                </div>
+            </div>
+            <!-- Bottom Center: Tech Stack -->
+
+            <!-- Bottom Right: Audio Controls -->
+            <div class="flex items-center gap-4 relative">
+                <div class="text-[10px] text-slate-500 uppercase tracking-widest hidden sm:block">音量設置</div>
+                <div class="relative">
+                    <button id="volume-btn"
+                        class="w-10 h-10 rounded border border-white/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all hover:neon-box-shadow">
+                        <span class="material-icons text-sm">volume_up</span>
+                    </button>
+                    <!-- Volume Slider Popup -->
+                    <div id="volume-control"
+                        class="absolute bottom-14 -right-2 bg-[#101622]/95 backdrop-blur border border-white/10 p-4 rounded-lg hidden flex-col gap-2 shadow-[0_0_20px_rgba(0,0,0,0.5)] w-14 items-center transition-all duration-300 transform origin-bottom">
+                        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.3"
+                            class="h-24 w-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-primary"
+                            style="writing-mode: bt-lr; -webkit-appearance: slider-vertical;">
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const bgMusic = document.getElementById('bg-music');
+            const volumeBtn = document.getElementById('volume-btn');
+            const volumeControl = document.getElementById('volume-control');
+            const volumeSlider = document.getElementById('volume-slider');
+
+            // Set initial volume
+            bgMusic.volume = 0.3;
+
+            // Handle Autoplay policy with robust fallback
+            const playAudio = () => {
+                const playPromise = bgMusic.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.log("Auto-play prevented by browser policy. Waiting for user interaction.");
+                        const unlockAudio = () => {
+                            bgMusic.play();
+                            // Remove listeners once played
+                            ['click', 'touchstart', 'keydown', 'mousemove'].forEach(event => {
+                                document.removeEventListener(event, unlockAudio);
+                            });
+                        };
+
+                        // Listen for any interaction to unlock audio
+                        ['click', 'touchstart', 'keydown', 'mousemove'].forEach(event => {
+                            document.addEventListener(event, unlockAudio, { once: true });
+                        });
+                    });
+                }
+            };
+
+            // Try playing immediately
+            playAudio();
+
+            // Ensure music plays when returning to the tab
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden && bgMusic.paused) {
+                    bgMusic.play().catch(() => {
+                        // If it fails again (e.g. browser restrictions), re-attach interaction listeners
+                        playAudio();
+                    });
+                }
+            });
+
+            // Toggle Volume Slider
+            volumeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                volumeControl.classList.toggle('hidden');
+                volumeControl.classList.toggle('flex');
+            });
+
+            // Close slider when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!volumeControl.contains(e.target) && !volumeBtn.contains(e.target)) {
+                    volumeControl.classList.add('hidden');
+                    volumeControl.classList.remove('flex');
+                }
+            });
+
+            // Update Volume
+            volumeSlider.addEventListener('input', (e) => {
+                bgMusic.volume = e.target.value;
+                // Update icon based on volume? Optional but nice
+                const icon = volumeBtn.querySelector('.material-icons');
+                if (e.target.value == 0) icon.textContent = 'volume_off';
+                else if (e.target.value < 0.5) icon.textContent = 'volume_down';
+                else icon.textContent = 'volume_up';
+            });
+
+            // Enter Button Sound and Navigation
+            const enterBtn = document.getElementById('enter-btn');
+            const enterSound = document.getElementById('enter-sound');
+
+            enterBtn.addEventListener('click', (e) => {
+                e.preventDefault(); // Stop immediate navigation
+                enterSound.volume = 0.5; // Set a reasonable volume
+                enterSound.play()
+                    .then(() => {
+                        // Wait slightly for sound to be audible or finish
+                        setTimeout(() => {
+                            window.location.href = enterBtn.href;
+                        }, 500); // 500ms delay should be enough for a short click sound
+                    })
+                    .catch((err) => {
+                        console.error("Audio play failed", err);
+                        // Fallback navigation if sound fails
+                        window.location.href = enterBtn.href;
+                    });
+            });
+        });
+    </script>
+    <!-- Decorative Corner Borders (Frame) -->
+    <div class="fixed top-6 left-6 w-8 h-8 border-l-2 border-t-2 border-primary pointer-events-none"></div>
+    <div class="fixed top-6 right-6 w-8 h-8 border-r-2 border-t-2 border-primary pointer-events-none"></div>
+    <div class="fixed bottom-6 left-6 w-8 h-8 border-l-2 border-b-2 border-primary pointer-events-none"></div>
+    <div class="fixed bottom-6 right-6 w-8 h-8 border-r-2 border-b-2 border-primary pointer-events-none"></div>
+</body>
+
+</html>

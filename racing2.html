@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>賽車詳細資訊介面 - Speed Variant</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Three.js Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/MTLLoader.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00f0ff", "background-light": "#f6f6f8",
+                        "background-dark": "#050a14",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .scanline {
+            background: linear-gradient(to bottom,
+                    rgba(255, 255, 255, 0),
+                    rgba(255, 255, 255, 0) 50%,
+                    rgba(0, 240, 255, 0.05) 50%,
+                    rgba(0, 240, 255, 0.05));
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+
+        .glass-panel {
+            background: rgba(5, 10, 20, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+        }
+
+        @keyframes pulse-bar {
+
+            0%,
+            100% {
+                opacity: 0.5;
+                height: 40%;
+            }
+
+            50% {
+                opacity: 1;
+                height: 100%;
+            }
+        }
+
+        .animate-pulse-bar {
+            animation: pulse-bar 1.5s infinite ease-in-out;
+        }
+
+        @keyframes speed-stripe {
+            0% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 20px 20px;
+            }
+        }
+
+        .speed-pattern {
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0, 240, 255, 0.05) 5px, rgba(0, 240, 255, 0.05) 10px);
+            animation: speed-stripe 2s linear infinite;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display min-h-screen relative overflow-hidden flex items-center justify-center">
+    <div class="absolute inset-0 z-0 bg-cover bg-center" data-alt="Cyberpunk neon city street background"
+        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCjx4bM-owKPVWfb2w3uo8Q2cOtx9HgnusheFbzYfsap-xEF7MS-HKMqqeDNcXS3Pq-tTvCzCM_M7Wt81oZHq9aVqYYxSPTVou_UlD9REjIpVH8nBGLCfXTZbAPtTwSXdBl20P_WwWaBo7hk9C4kBQVlmnGYuRVmZgQ5h_OknwoUL52fabTRKL2v3gPguWKfa4xfkzStI7b4j92rTAuk5vK-wEgsDDm-qxDebiU0TNaS4_EWExh5cSfAH_WNe_a39mCc2kBT8zykjM');">
+        <div class="absolute inset-0 bg-black/70 scanline"></div>
+    </div>
+    <main class="relative z-10 w-full max-w-5xl h-[85vh] flex flex-col md:flex-row gap-6 p-6 md:p-10 animate-fade-in">
+        <section class="flex flex-col gap-6 md:w-5/12 h-full">
+            <div class="glass-panel rounded-xl p-6 flex flex-col gap-2 relative overflow-hidden group">
+                <div class="absolute top-0 left-0 w-1 h-full bg-primary box-shadow-[0_0_15px_var(--primary-color)]">
+                </div>
+                <div class="flex justify-between items-start">
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-2 mb-1">
+                            <p class="text-primary text-xs font-bold tracking-[0.2em] uppercase">Class S // Speed
+                                Specialist</p>
+                            <span
+                                class="px-1.5 py-0.5 rounded bg-primary text-black text-[9px] font-bold tracking-wider uppercase">High
+                                Velocity</span>
+                        </div>
+                        <h1 class="text-white text-4xl md:text-5xl font-bold tracking-tighter leading-none italic">
+                            VELOCITY<br />X-STRIKE</h1>
+                        <div class="flex items-center gap-2 mt-2">
+                            <span
+                                class="bg-primary/10 text-primary border border-primary/30 text-[10px] px-2 py-0.5 rounded uppercase font-bold tracking-widest">速度型
+                                (SPEED TYPE)</span>
+                            <p class="text-gray-400 text-xs font-mono">VER 4.2 // AERO-MOD</p>
+                        </div>
+                    </div>
+                    <span class="material-symbols-outlined text-primary text-6xl animate-pulse opacity-80"
+                        style="text-shadow: 0 0 20px rgba(0,240,255,0.6);">
+                        speed
+                    </span>
+                </div>
+                <div
+                    class="absolute right-0 bottom-0 w-32 h-32 bg-gradient-to-tl from-primary/10 to-transparent rounded-tl-full pointer-events-none">
+                </div>
+            </div>
+            <div class="glass-panel rounded-xl flex-1 relative overflow-hidden flex flex-col border-primary/40">
+                <div
+                    class="absolute top-2 right-2 z-20 bg-black/60 backdrop-blur rounded px-2 py-1 border border-primary/30 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                    <p class="text-[10px] text-primary uppercase font-bold tracking-widest">AR Visualizer</p>
+                </div>
+                <div id="model-container" class="h-2/3 w-full relative overflow-hidden"
+                    data-model-path="assets/model/Racing car/GOLD/tripo_convert_05718469-20d0-4b83-8e43-ce47d8c9031a">
+                </div>
+                <div
+                    class="flex-1 p-5 flex flex-col justify-end gap-4 border-t border-white/5 bg-[#080d16]/80 backdrop-blur-sm">
+                    <div class="flex items-center gap-4">
+                        <button id="engine-btn"
+                            class="flex shrink-0 items-center justify-center rounded-full w-12 h-12 bg-primary hover:bg-white hover:text-black transition-all duration-300 text-black shadow-[0_0_20px_rgba(0,240,255,0.4)] group">
+                            <span
+                                class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">play_arrow</span>
+                        </button>
+                        <div class="flex-1 overflow-hidden">
+                            <div class="flex justify-between items-center">
+                                <p class="text-white text-xs font-bold leading-tight truncate tracking-wider">引擎聲</p>
+                            </div>
+                            <div class="flex items-end gap-[3px] h-6 mt-2 w-full opacity-80">
+                                <div class="w-1 bg-gradient-to-t from-blue-900 to-primary animate-pulse-bar"
+                                    style="animation-duration: 0.3s"></div>
+                                <div class="w-1 bg-gradient-to-t from-blue-900 to-primary animate-pulse-bar"
+                                    style="animation-duration: 0.5s"></div>
+                                <div class="w-1 bg-gradient-to-t from-blue-900 to-primary animate-pulse-bar"
+                                    style="animation-duration: 0.2s"></div>
+                                <div class="w-1 bg-gradient-to-t from-blue-900 to-primary animate-pulse-bar"
+                                    style="animation-duration: 0.6s"></div>
+                                <div class="w-1 bg-gradient-to-t from-blue-900 to-primary animate-pulse-bar"
+                                    style="animation-duration: 0.4s"></div>
+                                <div class="w-1 bg-gradient-to-t from-blue-900 to-primary animate-pulse-bar"
+                                    style="animation-duration: 0.7s"></div>
+                                <div class="w-1 bg-gradient-to-t from-blue-900 to-primary animate-pulse-bar"
+                                    style="animation-duration: 0.3s"></div>
+                                <div class="w-1 bg-gradient-to-t from-blue-900 to-primary animate-pulse-bar"
+                                    style="animation-duration: 0.5s"></div>
+                                <div class="w-1 bg-gradient-to-t from-blue-900 to-primary animate-pulse-bar"
+                                    style="animation-duration: 0.2s"></div>
+                                <div class="w-full bg-primary/10 h-[1px] self-center ml-1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Navigation Buttons -->
+            <div class="flex gap-4 min-h-[60px]">
+                <!-- Home Button -->
+                <a href="index.html"
+                    class="flex-1 glass-panel p-4 rounded-lg flex items-center justify-center gap-2 hover:bg-white/5 transition-colors group border-white/5">
+                    <span
+                        class="material-symbols-outlined text-gray-400 group-hover:text-white transition-colors">home</span>
+                    <span
+                        class="text-sm font-bold text-gray-300 group-hover:text-white uppercase tracking-wider">返回主頁</span>
+                </a>
+
+                <!-- Next/Prev Container -->
+                <div class="flex-1 flex flex-col gap-2">
+                    <!-- Next Button -->
+                    <a href="racing3.html"
+                        class="glass-panel p-3 rounded-lg flex items-center justify-center gap-2 hover:bg-white/5 transition-colors group border-white/5 h-full">
+                        <span
+                            class="text-sm font-bold text-gray-300 group-hover:text-white uppercase tracking-wider">下一台</span>
+                        <span
+                            class="material-symbols-outlined text-gray-400 group-hover:text-white transition-colors">arrow_forward</span>
+                    </a>
+                    <!-- Previous Button -->
+                    <a href="racing1.html"
+                        class="glass-panel p-2 rounded-lg flex items-center justify-center gap-2 hover:bg-white/5 transition-colors group border-white/5">
+                        <span
+                            class="material-symbols-outlined text-gray-400 group-hover:text-white transition-colors text-sm">arrow_back</span>
+                        <span
+                            class="text-xs font-bold text-gray-400 group-hover:text-white uppercase tracking-wider">上一台</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+        <section class="flex flex-col gap-6 md:w-7/12 h-full">
+            <div class="glass-panel rounded-xl p-6 md:p-8 flex flex-col gap-4 relative">
+                <div class="absolute top-0 right-0 p-4 opacity-20">
+                    <span class="material-symbols-outlined text-6xl text-primary rotate-12">flight</span>
+                </div>
+                <div class="flex items-center gap-2 mb-2 border-b border-primary/20 pb-4">
+                    <span class="material-symbols-outlined text-primary">terminal</span>
+                    <h2 class="text-white text-lg font-bold tracking-wide uppercase">設計理念</h2>
+                </div>
+                <div class="overflow-y-auto scrollbar-hide pr-2 max-h-[120px] relative z-10">
+                    <p class="text-gray-300 text-sm md:text-base font-light leading-relaxed">
+                        <span class="text-primary font-semibold">Velocity X-Strike</span> 是一款純種<span
+                            class="text-white">速度型</span>攔截車。為了追求原始動能輸出而犧牲了裝甲，其超流線型車身能以近乎零摩擦切開空氣阻力。車載 AI 將 90%
+                        的算力用於軌跡預測，以結構穩定性為代價換取極致速度。
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-4 gap-2 mt-2 pt-4 border-t border-white/5 relative z-10">
+                    <div class="text-center group cursor-default">
+                        <p class="text-[10px] text-gray-500 uppercase group-hover:text-primary transition-colors">車重
+                        </p>
+                        <p class="text-white font-mono text-sm">980kg</p>
+                    </div>
+                    <div class="text-center group cursor-default">
+                        <p class="text-[10px] text-gray-500 uppercase group-hover:text-primary transition-colors">極速
+                        </p>
+                        <p
+                            class="text-primary font-mono text-sm font-bold shadow-primary drop-shadow-[0_0_5px_rgba(0,240,255,0.5)]">
+                            485km/h</p>
+                    </div>
+                    <div class="text-center group cursor-default">
+                        <p class="text-[10px] text-gray-500 uppercase group-hover:text-primary transition-colors">0-100
+                        </p>
+                        <p class="text-white font-mono text-sm">1.8s</p>
+                    </div>
+                    <div class="text-center group cursor-default">
+                        <p class="text-[10px] text-gray-500 uppercase group-hover:text-primary transition-colors">風阻係數
+                        </p>
+                        <p class="text-white font-mono text-sm">0.18cd</p>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-panel rounded-xl flex-1 p-6 md:p-8 flex flex-col speed-pattern">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-primary text-sm font-bold tracking-widest uppercase mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">tune</span>
+                        賽車屬性
+                    </h3>
+                    <span
+                        class="bg-primary/10 text-primary text-[10px] px-2 py-1 rounded border border-primary/30 uppercase">Profile:
+                        Speed / Intel</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-center gap-5">
+                    <div class="grid grid-cols-[100px_1fr_40px] gap-y-4 items-center">
+                        <div
+                            class="text-primary text-xs font-bold uppercase tracking-wider text-right pr-4 drop-shadow-[0_0_5px_rgba(0,240,255,0.8)]">
+                            速度</div>
+                        <div class="h-3 bg-gray-900/80 rounded-sm overflow-hidden relative border border-white/5">
+                            <div
+                                class="absolute top-0 left-0 h-full w-[98%] bg-gradient-to-r from-transparent via-cyan-500 to-primary shadow-[0_0_15px_rgba(0,240,255,0.8)] relative">
+                                <div class="absolute right-0 top-0 bottom-0 w-[2px] bg-white animate-pulse"></div>
+                            </div>
+                        </div>
+                        <div class="text-primary font-mono text-lg font-bold text-right">98</div>
+                        <div class="text-gray-300 text-xs font-bold uppercase tracking-wider text-right pr-4">智能
+                        </div>
+                        <div class="h-2 bg-gray-900/80 rounded-sm overflow-hidden relative border border-white/5">
+                            <div
+                                class="absolute top-0 left-0 h-full w-[92%] bg-gradient-to-r from-blue-900 to-cyan-400">
+                            </div>
+                        </div>
+                        <div class="text-white font-mono text-sm text-right">92</div>
+                        <div class="text-gray-400 text-xs font-bold uppercase tracking-wider text-right pr-4">馬力
+                        </div>
+                        <div class="h-2 bg-gray-900/80 rounded-sm overflow-hidden relative border border-white/5">
+                            <div
+                                class="absolute top-0 left-0 h-full w-[70%] bg-gradient-to-r from-blue-900 to-blue-500 opacity-80">
+                            </div>
+                        </div>
+                        <div class="text-gray-300 font-mono text-sm text-right">70</div>
+                        <div class="text-gray-500 text-xs font-bold uppercase tracking-wider text-right pr-4">穩定性
+                        </div>
+                        <div class="h-2 bg-gray-900/80 rounded-sm overflow-hidden relative border border-white/5">
+                            <div class="absolute top-0 left-0 h-full w-[45%] bg-gray-600"></div>
+                        </div>
+                        <div class="text-gray-500 font-mono text-sm text-right">45</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-auto pt-4">
+                <button
+                    class="w-full group relative overflow-hidden rounded-lg bg-background-dark border border-gray-700 hover:border-primary transition-colors duration-300">
+                    <div
+                        class="absolute inset-0 w-0 bg-primary/20 transition-all duration-[250ms] ease-out group-hover:w-full">
+                    </div>
+                    <div class="relative flex items-center justify-center gap-3 px-6 py-4">
+                        <span
+                            class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">logout</span>
+                        <span
+                            class="text-gray-300 font-mono text-sm tracking-[0.2em] font-bold group-hover:text-white transition-colors">EXIT
+                            INTERFACE</span>
+                    </div>
+                </button>
+            </div>
+        </section>
+        <div
+            class="absolute -top-4 -left-4 w-24 h-24 border-t-2 border-l-2 border-primary/40 rounded-tl-3xl pointer-events-none">
+        </div>
+        <div
+            class="absolute -bottom-4 -right-4 w-24 h-24 border-b-2 border-r-2 border-primary/40 rounded-br-3xl pointer-events-none">
+        </div>
+    </main>
+
+    <audio id="bg-music" loop autoplay>
+        <source src="music/music1.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="engine-sound" preload="auto">
+        <source src="music/carsound2.mp3" type="audio/mpeg">
+    </audio>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Three.js Setup
+            const container = document.getElementById('model-container');
+            if (!container) return;
+
+            const scene = new THREE.Scene();
+            // scene.background = new THREE.Color(0x050a14); // Match panel background if needed
+
+            const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.z = 5;
+            camera.position.y = 1;
+
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(5, 5, 5);
+            scene.add(directionalLight);
+
+            // Primary color PointLight for this page
+            const primaryLight = new THREE.PointLight(0x00f0ff, 2, 10);
+            primaryLight.position.set(-2, 2, 2);
+            scene.add(primaryLight);
+
+            // Model Loading
+            const mtlLoader = new THREE.MTLLoader();
+            const basePath = 'assets/model/Racing car/GOLD/';
+            const fileName = 'tripo_convert_05718469-20d0-4b83-8e43-ce47d8c9031a';
+
+            mtlLoader.setPath(basePath);
+            mtlLoader.load(fileName + '.mtl', (materials) => {
+                materials.preload();
+
+                const objLoader = new THREE.OBJLoader();
+                objLoader.setMaterials(materials);
+                objLoader.setPath(basePath);
+                objLoader.load(fileName + '.obj', (object) => {
+                    // Center and scale the model
+                    const box = new THREE.Box3().setFromObject(object);
+                    const center = box.getCenter(new THREE.Vector3());
+                    const size = box.getSize(new THREE.Vector3());
+
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const scale = 3.5 / maxDim; // Adjust scale factor as needed
+                    object.scale.set(scale, scale, scale);
+
+                    object.position.x = -center.x * scale;
+                    object.position.y = -center.y * scale;
+                    object.position.z = -center.z * scale;
+
+                    // Initial rotation
+                    object.rotation.y = Math.PI / 4;
+
+                    scene.add(object);
+
+                    // Animation Loop
+                    const animate = () => {
+                        requestAnimationFrame(animate);
+                        object.rotation.y += 0.005; // Auto-rotate
+                        renderer.render(scene, camera);
+                    };
+                    animate();
+
+                }, (xhr) => {
+                    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+                }, (error) => {
+                    console.error('An error happened loading the OBJ:', error);
+                });
+            });
+
+            // Handle Resize
+            window.addEventListener('resize', () => {
+                if (container) {
+                    camera.aspect = container.clientWidth / container.clientHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(container.clientWidth, container.clientHeight);
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const bgMusic = document.getElementById('bg-music');
+            if (bgMusic) {
+                bgMusic.volume = 0.3;
+                const playPromise = bgMusic.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.log("Autoplay blocked. Waiting for interaction.");
+                        const unlock = () => {
+                            bgMusic.play();
+                            ['click', 'mousemove', 'keydown', 'touchstart'].forEach(e =>
+                                document.removeEventListener(e, unlock)
+                            );
+                        };
+                        ['click', 'mousemove', 'keydown', 'touchstart'].forEach(e =>
+                            document.addEventListener(e, unlock, { once: true })
+                        );
+                    });
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const engineBtn = document.getElementById('engine-btn');
+            const engineSound = document.getElementById('engine-sound');
+
+            if (engineBtn && engineSound) {
+                engineBtn.addEventListener('click', () => {
+                    engineSound.currentTime = 0;
+                    engineSound.volume = 1.0;
+                    engineSound.play().catch(e => console.log("Error playing engine sound:", e));
+
+                    // Add a visual kick (optional)
+                    engineBtn.classList.add('scale-95');
+                    setTimeout(() => engineBtn.classList.remove('scale-95'), 100);
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

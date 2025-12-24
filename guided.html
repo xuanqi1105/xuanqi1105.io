@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>賽車挑選頁面</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "sans": ["Noto Sans", "sans-serif"]
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #282e39 1px, transparent 1px), linear-gradient(to bottom, #282e39 1px, transparent 1px)",
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(16, 22, 34, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .neon-glow {
+            text-shadow: 0 0 10px rgba(19, 91, 236, 0.7);
+        }
+
+        .neon-border-glow {
+            box-shadow: 0 0 15px rgba(19, 91, 236, 0.3);
+        }
+
+        .hud-corner::before,
+        .hud-corner::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-color: #135bec;
+            border-style: solid;
+            transition: all 0.3s ease;
+        }
+
+        .hud-corner::before {
+            top: 0;
+            left: 0;
+            border-width: 2px 0 0 2px;
+        }
+
+        .hud-corner::after {
+            bottom: 0;
+            right: 0;
+            border-width: 0 2px 2px 0;
+        }
+
+        @keyframes scanline {
+            0% {
+                transform: translateY(-100%);
+            }
+
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(19, 91, 236, 0.3);
+            opacity: 0.5;
+            animation: scanline 4s linear infinite;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fade-in-up 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-white font-display overflow-hidden h-screen w-screen selection:bg-primary selection:text-white">
+    <div class="absolute inset-0 w-full h-full z-0">
+        <img alt="Futuristic dark car showroom with neon lights and concrete floor"
+            class="w-full h-full object-cover opacity-60"
+            data-alt="Futuristic dark car showroom with neon lights and concrete floor"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzwrUv9kXj8MZS-q7VYFZ8dYVfSrn4Gxe0Ov9LV5Ah_o2dPR_F5RSL3Er8wobEnSI2muuCPSLj_KqPpKwdxTzYgpdDGq_slpCNY5YsyGEE5dQE3hhhTA1UXhSWyZGe0ccPeVqNR9sMJo7z79LmSbaOVnqOke1FMn5qXZ-Npk8NiS3XhDLZ8tYEm3jPoYvPB0gziq8Cy-nSDyllcmmR0U66IzFX9wXo8gNJA54JGHjPnW9hOexGT-SDnwJW6HST7vQhMYFwXeSQLyQ" />
+        <div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/20 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-background-dark/80 via-transparent to-background-dark/80">
+        </div>
+        <div class="absolute inset-0 opacity-10 bg-[length:40px_40px] bg-grid-pattern pointer-events-none"></div>
+    </div>
+    <div class="scanline"></div>
+    <div class="relative z-10 flex flex-col h-full w-full">
+        <header
+            class="flex items-center justify-between whitespace-nowrap border-b border-white/10 px-6 py-4 lg:px-10 bg-black/40 backdrop-blur-md z-30">
+            <div class="flex items-center gap-4 text-white">
+                <div class="size-6 text-primary animate-pulse">
+                    <span class="material-symbols-outlined text-2xl">garage</span>
+                </div>
+
+            </div>
+            <div class="flex flex-1 justify-end gap-8">
+
+                <div class="flex gap-3">
+                    <a href="index.html" id="back-btn"
+                        class="px-4 py-2 rounded bg-primary/20 border border-primary text-primary hover:bg-primary hover:text-white transition-all text-sm font-bold tracking-widest flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">arrow_back</span>
+                        <span>返回主頁</span>
+                    </a>
+                    <audio id="enter-sound" preload="auto">
+                        <source src="music/enter1.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+        </header>
+        <main
+            class="flex-1 relative flex flex-col items-center justify-end lg:justify-end pb-24 w-full overflow-hidden">
+
+            <div class="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+                <div class="w-[60vw] h-[60vh] border border-white/5 rounded-3xl relative group">
+                    <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-primary/50"></div>
+                    <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-primary/50"></div>
+                    <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-primary/50"></div>
+                    <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-primary/50"></div>
+
+                    <!-- 3D Model Container -->
+                    <div id="car-model-container"
+                        class="absolute inset-0 z-10 w-full h-full overflow-hidden rounded-3xl"></div>
+                </div>
+            </div>
+            <div class="flex flex-col items-center w-full max-w-5xl px-6 z-20 animate-fade-in-up gap-8">
+                <div class="text-center space-y-2">
+
+                    <h1
+                        class="text-6xl md:text-8xl font-black tracking-tighter text-white neon-glow uppercase italic relative">
+                        賽車 <span
+                            class="text-transparent bg-clip-text bg-gradient-to-br from-primary to-purple-400">介紹</span>
+                    </h1>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
+                    <div
+                        class="glass-panel p-4 rounded-lg border border-white/10 hud-corner relative group flex flex-col items-center justify-center gap-1 hover:bg-white/5 transition-colors">
+                        <span class="text-[10px] text-gray-400 font-bold tracking-widest uppercase">最高時速</span>
+                        <div class="flex items-end gap-1">
+                            <span class="text-2xl font-bold text-white leading-none">350</span>
+                            <span class="text-[10px] text-primary font-bold mb-0.5">KM/H</span>
+                        </div>
+                        <div class="w-full h-1 bg-white/10 rounded-full mt-2 overflow-hidden">
+                            <div class="h-full w-[85%] bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.6)]"></div>
+                        </div>
+                    </div>
+                    <div
+                        class="glass-panel p-4 rounded-lg border border-white/10 hud-corner relative group flex flex-col items-center justify-center gap-1 hover:bg-white/5 transition-colors">
+                        <span class="text-[10px] text-gray-400 font-bold tracking-widest uppercase">爆發力</span>
+                        <div class="flex items-end gap-1">
+                            <span class="text-2xl font-bold text-white leading-none">2.9</span>
+                            <span class="text-[10px] text-primary font-bold mb-0.5">SEC</span>
+                        </div>
+                        <div class="w-full h-1 bg-white/10 rounded-full mt-2 overflow-hidden">
+                            <div class="h-full w-[92%] bg-primary shadow-[0_0_8px_rgba(19,91,236,0.6)]"></div>
+                        </div>
+                    </div>
+                    <div
+                        class="glass-panel p-4 rounded-lg border border-white/10 hud-corner relative group flex flex-col items-center justify-center gap-1 hover:bg-white/5 transition-colors">
+                        <span class="text-[10px] text-gray-400 font-bold tracking-widest uppercase">馬力</span>
+                        <div class="flex items-end gap-1">
+                            <span class="text-2xl font-bold text-white leading-none">850</span>
+                            <span class="text-[10px] text-primary font-bold mb-0.5">HP</span>
+                        </div>
+                        <div class="w-full h-1 bg-white/10 rounded-full mt-2 overflow-hidden">
+                            <div class="h-full w-[95%] bg-[#0bda5e] shadow-[0_0_8px_rgba(11,218,94,0.6)]"></div>
+                        </div>
+                    </div>
+                    <div
+                        class="glass-panel p-4 rounded-lg border border-white/10 hud-corner relative group flex flex-col items-center justify-center gap-1 hover:bg-white/5 transition-colors">
+                        <span class="text-[10px] text-gray-400 font-bold tracking-widest uppercase">操控性</span>
+                        <div class="flex items-end gap-1">
+                            <span class="text-2xl font-bold text-white leading-none">S+</span>
+                            <span class="text-[10px] text-primary font-bold mb-0.5">RANK</span>
+                        </div>
+                        <div class="w-full h-1 bg-white/10 rounded-full mt-2 overflow-hidden">
+                            <div class="h-full w-[98%] bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.6)]"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-6">
+                    <a href="racing1.html" id="racing-btn"
+                        class="bg-primary hover:bg-primary/80 text-white text-lg font-bold py-4 px-12 rounded skew-x-[-10deg] shadow-[0_0_20px_rgba(19,91,236,0.4)] hover:shadow-[0_0_30px_rgba(19,91,236,0.6)] transition-all transform hover:-translate-y-1 active:translate-y-0 flex items-center gap-3 border border-white/20">
+                        <span>賽車界面</span>
+                    </a>
+
+                </div>
+            </div>
+        </main>
+        <div class="absolute bottom-6 left-0 right-0 flex justify-center z-30 pointer-events-none">
+            <div
+                class="glass-panel px-4 py-2 rounded-full border border-white/10 flex items-center gap-4 pointer-events-auto">
+                <span class="text-[10px] font-bold text-white/30 tracking-widest">1 / 7 MODELS</span>
+                <div class="flex gap-1">
+                    <div class="w-2 h-2 rounded-full bg-white/20"></div>
+                    <div class="w-2 h-2 rounded-full bg-white/20"></div>
+                    <div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_5px_#135bec]"></div>
+                    <div class="w-2 h-2 rounded-full bg-white/20"></div>
+                    <div class="w-2 h-2 rounded-full bg-white/20"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load embedded model data -->
+    <script src="assets/dragon_model_data.js"></script>
+    <script type="module">
+        import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+        import { OBJLoader } from 'https://unpkg.com/three@0.160.0/examples/jsm/loaders/OBJLoader.js';
+        import { OrbitControls } from 'https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+
+        const initCar3D = () => {
+            const container = document.getElementById('car-model-container');
+            if (!container) return;
+
+            // Scene
+            const scene = new THREE.Scene();
+
+            // Camera
+            const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(4, 2, 5);
+
+            // Renderer
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.0;
+            container.appendChild(renderer.domElement);
+
+            // Controls
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.enablePan = false;
+            controls.maxPolarAngle = Math.PI / 2;
+            controls.target.set(0, 0.5, 0);
+
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            const spotLight = new THREE.SpotLight(0xffffff, 50);
+            spotLight.position.set(5, 10, 5);
+            spotLight.angle = 0.5;
+            spotLight.penumbra = 0.5;
+            scene.add(spotLight);
+
+            const fillLight = new THREE.DirectionalLight(0x135bec, 1.5);
+            fillLight.position.set(-5, 0, -5);
+            scene.add(fillLight);
+
+            const rimLight = new THREE.DirectionalLight(0xa855f7, 1.5);
+            rimLight.position.set(5, 0, -5);
+            scene.add(rimLight);
+
+            // Material - Metallic Car Paint
+            const carMaterial = new THREE.MeshPhysicalMaterial({
+                color: 0x111111,
+                metalness: 0.9,
+                roughness: 0.2,
+                clearcoat: 1.0,
+                clearcoatRoughness: 0.1,
+                sheen: 0.5,
+                sheenColor: 0x135bec
+            });
+
+            // Loader
+            const loader = new OBJLoader();
+
+            if (window.DRAGON_MODEL_DATA) {
+                try {
+                    // Decode Base64
+                    const base64Parts = window.DRAGON_MODEL_DATA.split(',');
+                    const base64Data = base64Parts[1] || window.DRAGON_MODEL_DATA;
+
+                    // Decode to text using TextDecoder (assuming content is text-based OBJ)
+                    const binaryString = window.atob(base64Data);
+                    const len = binaryString.length;
+                    const bytes = new Uint8Array(len);
+                    for (let i = 0; i < len; i++) {
+                        bytes[i] = binaryString.charCodeAt(i);
+                    }
+                    const text = new TextDecoder().decode(bytes);
+
+                    const object = loader.parse(text);
+
+                    // Normalize
+                    const box = new THREE.Box3().setFromObject(object);
+                    const size = box.getSize(new THREE.Vector3());
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const scale = 3.5 / maxDim;
+
+                    object.traverse((child) => {
+                        if (child.isMesh) {
+                            child.material = carMaterial;
+                            child.castShadow = true;
+                            child.receiveShadow = true;
+                        }
+                    });
+
+                    object.scale.setScalar(scale);
+
+                    const center = box.getCenter(new THREE.Vector3());
+                    object.position.sub(center.multiplyScalar(scale));
+                    object.position.y += (size.y * scale) * 0.4;
+
+                    scene.add(object);
+
+                    // Animate
+                    const animate = () => {
+                        requestAnimationFrame(animate);
+                        controls.update();
+                        object.rotation.y += 0.003;
+                        renderer.render(scene, camera);
+                    };
+                    animate();
+
+                } catch (err) {
+                    console.error("Error parsing embedded model:", err);
+                    container.innerHTML = '<div class="flex items-center justify-center h-full text-red-500 font-bold">Error Loading Model</div>';
+                }
+            } else {
+                console.error("DRAGON_MODEL_DATA not found");
+                container.innerHTML = '<div class="flex items-center justify-center h-full text-white/50 font-bold tracking-widest">MODEL DATA MISSING</div>';
+            }
+
+            window.addEventListener('resize', () => {
+                if (!container) return;
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initCar3D);
+        } else {
+            initCar3D();
+        }
+    </script>
+    <audio id="bg-music" loop autoplay>
+        <source src="music/music1.mp3" type="audio/mpeg">
+    </audio>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const bgMusic = document.getElementById('bg-music');
+            bgMusic.volume = 0.3;
+
+            // Attempt to play immediately
+            const playPromise = bgMusic.play();
+
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("Autoplay blocked. Waiting for interaction.");
+                    // Fallback: Play on first interaction (mousemove/click/keydown)
+                    // Even if user says "no button click", any interaction counts
+                    const unlock = () => {
+                        bgMusic.play();
+                        ['click', 'mousemove', 'keydown', 'touchstart'].forEach(e =>
+                            document.removeEventListener(e, unlock)
+                        );
+                    };
+                    ['click', 'mousemove', 'keydown', 'touchstart'].forEach(e =>
+                        document.addEventListener(e, unlock, { once: true })
+                    );
+                });
+            }
+
+            // Back button sound logic
+            const backBtn = document.getElementById('back-btn');
+            const enterSound = document.getElementById('enter-sound');
+
+            if (backBtn && enterSound) {
+                backBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    enterSound.volume = 0.5;
+                    enterSound.currentTime = 0;
+
+                    // Simple play and redirect
+                    const playPromise = enterSound.play();
+
+                    const redirect = () => {
+                        window.location.href = backBtn.href;
+                    };
+
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            // Wait a bit for sound to play
+                            setTimeout(redirect, 400);
+                        }).catch(() => {
+                            // If autoplay blocked, redirect immediately
+                            redirect();
+                        });
+                    } else {
+                        setTimeout(redirect, 400);
+                    }
+                });
+            }
+
+            // Racing button sound logic
+            const racingBtn = document.getElementById('racing-btn');
+            if (racingBtn && enterSound) {
+                racingBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    enterSound.volume = 0.5;
+                    enterSound.currentTime = 0;
+                    const playPromise = enterSound.play();
+                    const redirect = () => window.location.href = racingBtn.href;
+
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => setTimeout(redirect, 400)).catch(redirect);
+                    } else {
+                        setTimeout(redirect, 400);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
