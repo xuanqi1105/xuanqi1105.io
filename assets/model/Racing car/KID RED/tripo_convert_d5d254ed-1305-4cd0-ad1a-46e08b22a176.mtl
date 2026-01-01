@@ -1,0 +1,16 @@
+# Blender 4.5.0 MTL File: 'None'
+# www.blender.org
+
+newmtl tripo_mat_d5d254ed-1305-4cd0-ad1a-46e08b22a176
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd redracecar3dmodel_basecolor.JPEG
+map_Ns redracecar3dmodel_roughness.JPEG
+map_Pr redracecar3dmodel_roughness.JPEG
+map_refl redracecar3dmodel_metallic.JPEG
+map_Pm redracecar3dmodel_metallic.JPEG
+map_Bump -bm 1.000000 redracecar3dmodel_normal.JPEG
