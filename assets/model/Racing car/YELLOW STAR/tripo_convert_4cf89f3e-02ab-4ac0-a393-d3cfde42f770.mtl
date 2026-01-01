@@ -1,0 +1,16 @@
+# Blender 4.5.0 MTL File: 'None'
+# www.blender.org
+
+newmtl tripo_mat_4cf89f3e-02ab-4ac0-a393-d3cfde42f770
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd formula1car3dmodel_basecolor.JPEG
+map_Ns formula1car3dmodel_roughness.JPEG
+map_Pr formula1car3dmodel_roughness.JPEG
+map_refl formula1car3dmodel_metallic.JPEG
+map_Pm formula1car3dmodel_metallic.JPEG
+map_Bump -bm 1.000000 formula1car3dmodel_normal.JPEG
